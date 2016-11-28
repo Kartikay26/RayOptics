@@ -1,22 +1,23 @@
 window.onload = main
 
-var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=1,f=10,t = 0,step=1
+var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=1,f=10,t = 0,step=20,key
+var wa=0,wb=0,wc=0
 // step = 1 for perfect resolution
 
 function change (variableName,to,time) {
 	var i = eval(variableName)
 	var speed = (to-i)/time
+	var v = variableName.split('.')[0]
 	var z = "setInterval(function(){"+variableName+"+="+speed/10+";\
 		if(Math.abs("+variableName+"-"+to+")<0.1)\
-		{clearInterval(_z_"+variableName+");_z_"+variableName+"=0;\
+		{clearInterval(_z_"+v+");_z_"+v+"=0;\
 		console.log('Done (change "+variableName+").')}},100)"
 	var n = eval(z)
-	eval("_z_"+variableName+"="+n)
+	eval("_z_"+v+"="+n)
 	return n
 }
 
 function main() {
-
 	// get Canvases ready
 	can1 = document.getElementById('firstCanvas')
 	can2 = document.getElementById('secondCanvas')
@@ -51,6 +52,9 @@ function main() {
 
 	// DRAW
 	drawFrame()
+	addLine(new Point(-1,0,0),new Point(1,0,0))
+	addLine(new Point(0,-1,0),new Point(0,1,0))
+	addLine(new Point(0,0,-1),new Point(0,0,1))
 	c1.lineCap = "round"
 	universe.eye = new Eye(1,1,1,1,1,1)
 	addPoint(0,0,0)
@@ -63,10 +67,20 @@ function drawFrame () {
 	c1.fillRect(0,0,w,h)
 	c2.fillStyle = "#000"
 	c2.fillRect(0,0,w,h)
+	if (key == 37) {wb -= 0.01;wc -= 0.01; }
+    if (key == 39) {wb += 0.01;wc += 0.01; }
+    if (key == 38) {wa -= 0.01;wb -= 0.01; }
+    if (key == 40) {wa += 0.01;wb += 0.01; }
 }
+
+window.onkeydown = function(e){key = e.keyCode}
+window.onkeyup = function(e){key = 0}
 
 function animate () {
 	drawFrame()
+	universe.display.a += wa;
+	universe.display.b += wb;
+	universe.display.c += wc;
 	unit = Math.min(w,h)/10 * zoom
 	t += 1
 	d = whatToDraw()
@@ -113,3 +127,5 @@ function eyeDraw (func) {
 		}
 	}
 }
+
+

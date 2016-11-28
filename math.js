@@ -164,17 +164,21 @@ function Eye (x,y,z,a,b,c) {
 		// ---> follow laws of optics -----> end on opaque object/light source->
 		// ------> object.colour ---> average --------> hex ------> return
 		// returns colour
-		z = 100/(Math.sqrt(x*x+y*y)+1)
+		
 
 		// To_RGB (0-->1) |----> (#xyz)
-		var zr = z, zg = z, zb = z
-		return "#"+hex[Math.floor(zr*16)]
-				  +hex[Math.floor(zg*16)]
-				  +hex[Math.floor(zb*16)]
+		
 	}
 }
 
+function dectohex (r,g,b) {
+	return "#"+hex[Math.floor(r*16)]
+			  +hex[Math.floor(g*16)]
+			  +hex[Math.floor(b*16)]
+}
+
 function LambertProjection (argument) {
-	// body...
+	
 	return false
 }
+
