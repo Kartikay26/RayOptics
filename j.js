@@ -1,7 +1,7 @@
 window.onload = main
 
-var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=1,f=20,t = 0,step=20,key
-var wa=0,wb=0,wc=0
+var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=20,t = 0,step=20,key
+var wa=1,wb=1,wc=1
 // step = 1 for perfect resolution
 
 function change (variableName,to,time) {
@@ -52,28 +52,31 @@ function main() {
 
 	// DRAW
 	drawFrame()
-	addLine(new Point(-1,0,0),new Point(1,0,0),"#0f0")
+	//c1.setLineDash([5, 5]);
+	for (var i = -1; i <= 1; i++) {
+	for (var j = -1; j <= 1; j++) {
+	for (var k = -1; k <= 1; k++) {
+	for (var l = -1; l <= 1; l++) {
+	for (var m = -1; m <= 1; m++) {
+	for (var n = -1; n <= 1; n++) {
+		var d = Math.sqrt(Math.pow(i-l,2)+Math.pow(j-m,2)+Math.pow(k-n,2))
+		var d0 = 1 // try d0 = 2.9 :)
+		if (Math.abs(d - d0)<0.1) {
+			addLine(new Point(i,j,k),
+				new Point(l,m,n),"#fff")
+		};
+	};
+	};
+	};
+	};
+	};
+	};
+	addLine(new Point(-1,0,0),new Point(1,0,0),"#f00")
 	addLine(new Point(0,-1,0),new Point(0,1,0),"#0f0")
-	addLine(new Point(0,0,-1),new Point(0,0,1),"#0f0")
+	addLine(new Point(0,0,-1),new Point(0,0,1),"#00f")
 	addPoint(0,0,0)
-	addPoint(-1,-1,-1,"#f00")
-	addPoint(-1,-1,+1,"#f00")
-	addPoint(-1,+1,-1,"#f00")
-	addPoint(-1,+1,+1,"#f00")
-	addPoint(+1,-1,-1,"#f00")
-	addPoint(+1,-1,+1,"#f00")
-	addPoint(+1,+1,-1,"#f00")
-	addPoint(+1,+1,+1,"#f00")
 	c1.lineCap = "round"
 	universe.eye = new Eye(0,0,0,0,0,0)
-
-	function $$$(x,y){z=LambertToSphere(x,y);addPoint(z[0]+1,z[1]+1,z[2]+1);}
-	for(j=-1;j<=1;j+=0.1){for(i=0;i<=tau;i+=0.25){$$$(i,j)}}
-	zoom=0
-	wa=1, wb=2
-	change('zoom',3,20)
-
-	animate()
 	setInterval(animate,1000/f)
 }
 
@@ -126,7 +129,7 @@ function drawPoint (point2d) {
 function drawLine (line2d) {
 	c1.beginPath()
 	c1.strokeStyle = line2d.color
-	c1.lineWidth = 5
+	c1.lineWidth = 2
 	c1.moveTo(x0+line2d.x1,y0-line2d.y1)
 	c1.lineTo(x0+line2d.x2,y0-line2d.y2)
 	c1.stroke()
