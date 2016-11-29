@@ -55,17 +55,26 @@ function main() {
 	addLine(new Point(-1,0,0),new Point(1,0,0))
 	addLine(new Point(0,-1,0),new Point(0,1,0))
 	addLine(new Point(0,0,-1),new Point(0,0,1))
+	addPoint(0,0,0)
+	addPoint(-1,-1,-1,"#f00")
+	addPoint(-1,-1,+1,"#f00")
+	addPoint(-1,+1,-1,"#f00")
+	addPoint(-1,+1,+1,"#f00")
+	addPoint(+1,-1,-1,"#f00")
+	addPoint(+1,-1,+1,"#f00")
+	addPoint(+1,+1,-1,"#f00")
+	addPoint(+1,+1,+1,"#f00")
 	c1.lineCap = "round"
 	universe.eye = new Eye(0,0,0,0,0,0)
-	addPoint(0,0,0)
-	animate()
-	setInterval(animate,1000/f)
 
-	function $$$(x,y){z=LambertToSphere(x,y);addPoint(z[0],z[1],z[2]);}
+	function $$$(x,y){z=LambertToSphere(x,y);addPoint(z[0]+1,z[1]+1,z[2]+1);}
 	for(j=-1;j<=1;j+=0.1){for(i=0;i<=tau;i+=0.25){$$$(i,j)}}
 	zoom=0
 	wa=1, wb=2
-	change('zoom',5,60)
+	change('zoom',3,20)
+
+	animate()
+	setInterval(animate,1000/f)
 }
 
 function drawFrame () {
@@ -107,7 +116,7 @@ function drawPoint (point2d) {
 	var x = point2d.x
 	var y = point2d.y
 	c1.beginPath()
-	c1.strokeStyle = "#fff"
+	c1.strokeStyle = point2d.color
 	c1.lineWidth = 2
 	c1.arc(x0+x,y0-y,zoom,0,tau)
 	c1.stroke()

@@ -4,8 +4,10 @@ universe.display = {'a':0, 'b':0, 'c':0}
 
 var hex = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f','f']
 
-function addPoint (x,y,z) {
-	universe.points.push(new Point(x,y,z))
+function addPoint (x,y,z,color="#fff") {
+	z = new Point(x,y,z)
+	z.color = color
+	universe.points.push(z)
 }
 
 function addLine (p1,p2) {
@@ -121,6 +123,7 @@ function CanvasPoint (point) {
 	var x=v.x,y=v.y,z=v.z
 	this.x = unit *(0+rx*x-rx*y)
 	this.y = unit *(z-ry*x-ry*y)
+	this.color = point.color
 }
 
 function CanvasLine (line) {
