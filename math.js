@@ -164,7 +164,16 @@ function Eye (x,y,z,a,b,c) {
 
 	addPoint(x,y,z)
 
-	this.see = function (x,y) {
+	this.see = function (x,y,e=0) {
+		// NOTE: FIRST CONVERT (x,y) to map coordinate system
+		// rectangle (-w,-h)-(w,h) to (-3.14,-1)-(3.14,1)
+		if (e==0) {
+			var x_ = x*tau/w
+			var y_ = 2*y/h // think afterwards: why is this '2' here?
+		} else{
+			x_=x
+			y_=y
+		};
 		// supposed to 'send' rays in all directions and 'see objects'
 		// Scheme:
 		// (x,y) +-(a,b,c?) ----> L-Projection ----> (x,y,z) (part of sphere)
@@ -179,7 +188,10 @@ function Eye (x,y,z,a,b,c) {
 		
 
 		// TEST
-		return 
+		var temp = LambertToSphere(x_,y_)
+		return dectohex(Math.abs(temp[0]),
+						Math.abs(temp[1]),
+						Math.abs(temp[2]))
 	}
 }
 

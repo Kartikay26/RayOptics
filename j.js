@@ -1,7 +1,7 @@
 window.onload = main
 
-var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=20,t = 0,step=20,key
-var wa=1,wb=1,wc=1
+var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=5,t = 0,step=5,key
+var wa=0,wb=0,wc=0
 // step = 1 for perfect resolution
 
 function change (variableName,to,time) {
@@ -51,32 +51,12 @@ function main() {
 	y0=h/2
 
 	// DRAW
-	drawFrame()
-	//c1.setLineDash([5, 5]);
-	for (var i = -1; i <= 1; i++) {
-	for (var j = -1; j <= 1; j++) {
-	for (var k = -1; k <= 1; k++) {
-	for (var l = -1; l <= 1; l++) {
-	for (var m = -1; m <= 1; m++) {
-	for (var n = -1; n <= 1; n++) {
-		var d = Math.sqrt(Math.pow(i-l,2)+Math.pow(j-m,2)+Math.pow(k-n,2))
-		var d0 = 1 // try d0 = 2.9 :)
-		if (Math.abs(d - d0)<0.1) {
-			addLine(new Point(i,j,k),
-				new Point(l,m,n),"#fff")
-		};
-	};
-	};
-	};
-	};
-	};
-	};
 	addLine(new Point(-1,0,0),new Point(1,0,0),"#f00")
 	addLine(new Point(0,-1,0),new Point(0,1,0),"#0f0")
 	addLine(new Point(0,0,-1),new Point(0,0,1),"#00f")
 	addPoint(0,0,0)
 	c1.lineCap = "round"
-	universe.eye = new Eye(0,0,0,0,0,0)
+	universe.eye = new Eye(1,1,1,-1,-1,-1)
 	setInterval(animate,1000/f)
 }
 
@@ -139,6 +119,7 @@ function drawLine (line2d) {
 function eyeDraw (func) {
 	for (var i = -w; i < w; i+=step) {
 		for (var j = -h; j < h; j+=step) {
+			//console.log(func(i,j))
 			c2.fillStyle = func(i,j)
 			c2.fillRect(x0+i,y0-j,step,step)
 			// note the last 2 arguments ar not coordinates
