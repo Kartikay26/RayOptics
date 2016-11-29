@@ -1,6 +1,6 @@
 window.onload = main
 
-var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=1,f=10,t = 0,step=20,key
+var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=1,f=20,t = 0,step=20,key
 var wa=0,wb=0,wc=0
 // step = 1 for perfect resolution
 
@@ -56,10 +56,16 @@ function main() {
 	addLine(new Point(0,-1,0),new Point(0,1,0))
 	addLine(new Point(0,0,-1),new Point(0,0,1))
 	c1.lineCap = "round"
-	universe.eye = new Eye(1,1,1,1,1,1)
+	universe.eye = new Eye(0,0,0,0,0,0)
 	addPoint(0,0,0)
 	animate()
 	setInterval(animate,1000/f)
+
+	function $$$(x,y){z=LambertToSphere(x,y);addPoint(z[0],z[1],z[2]);}
+	for(j=-1;j<=1;j+=0.1){for(i=0;i<=tau;i+=0.25){$$$(i,j)}}
+	zoom=0
+	wa=1, wb=2
+	change('zoom',5,60)
 }
 
 function drawFrame () {
@@ -67,10 +73,10 @@ function drawFrame () {
 	c1.fillRect(0,0,w,h)
 	c2.fillStyle = "#000"
 	c2.fillRect(0,0,w,h)
-	if (key == 37) {wb -= 0.01;wc -= 0.01; }
-    if (key == 39) {wb += 0.01;wc += 0.01; }
-    if (key == 38) {wa -= 0.01;wb -= 0.01; }
-    if (key == 40) {wa += 0.01;wb += 0.01; }
+	//if (key == 37) {wb -= 0.01;wc -= 0.01; }
+    //if (key == 39) {wb += 0.01;wc += 0.01; }
+    //if (key == 38) {wa -= 0.01;wb -= 0.01; }
+	//if (key == 40) {wa += 0.01;wb += 0.01; }
 }
 
 window.onkeydown = function(e){key = e.keyCode}
@@ -78,9 +84,9 @@ window.onkeyup = function(e){key = 0}
 
 function animate () {
 	drawFrame()
-	universe.display.a += wa;
-	universe.display.b += wb;
-	universe.display.c += wc;
+	universe.display.a += wa/100;
+	universe.display.b += wb/100;
+	universe.display.c += wc/100;
 	unit = Math.min(w,h)/10 * zoom
 	t += 1
 	d = whatToDraw()
@@ -102,8 +108,8 @@ function drawPoint (point2d) {
 	var y = point2d.y
 	c1.beginPath()
 	c1.strokeStyle = "#fff"
-	c1.lineWidth = 5
-	c1.arc(x0+x,y0-y,5,0,tau)
+	c1.lineWidth = 2
+	c1.arc(x0+x,y0-y,zoom,0,tau)
 	c1.stroke()
 	c1.closePath()
 }

@@ -155,7 +155,9 @@ function Eye (x,y,z,a,b,c) {
 	this.a = a; // ┬
 	this.b = b; // | Direction in which the eye is watching.
 	this.c = c; // ┴
+
 	addPoint(x,y,z)
+
 	this.see = function (x,y) {
 		// supposed to 'send' rays in all directions and 'see objects'
 		// Scheme:
@@ -165,9 +167,13 @@ function Eye (x,y,z,a,b,c) {
 		// ------> object.colour ---> average --------> hex ------> return
 		// returns colour
 		
+		// first develop the "pinhole" eye
 
 		// To_RGB (0-->1) |----> (#xyz)
 		
+
+		// TEST
+		return 
 	}
 }
 
@@ -177,8 +183,35 @@ function dectohex (r,g,b) {
 			  +hex[Math.floor(b*16)]
 }
 
-function LambertProjection (argument) {
-	
-	return false
+function latitude (x,y,z) {
+	var R = Math.sqrt(x*x+y*y+z*z)
+	var rho = Math.sqrt(x*x+y*y)
+	var phi = Math.atan2(z,rho);
+	return phi
 }
 
+function longitude (x,y,z) {
+	var lambda = Math.atan2(y,x)
+	return lambda
+}
+
+function LambertProjection (x,y,z) {
+	var x_ = longitude(x,y,z)
+	var y_ = Math.sin(latitude(x,y,z))
+	return [x_,y_]
+}
+
+function inverseLambertProjection (x_,y_) {
+	longitude = x_
+	latitude = Math.asin(y_)
+	//        lambda     phi
+	return [longitude,latitude]
+}
+
+function LambertToSphere (x_,y_,r=1) {
+	var z = r*Math.sin(inverseLambertProjection(x_,y_)[1])
+	var p = Math.sqrt(r*r-z*z)
+	var x = p*Math.cos(inverseLambertProjection(x_,y_)[0])
+	var y = p*Math.sin(inverseLambertProjection(x_,y_)[0])
+	return [x,y,z]
+}
