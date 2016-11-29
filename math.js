@@ -10,8 +10,10 @@ function addPoint (x,y,z,color="#fff") {
 	universe.points.push(z)
 }
 
-function addLine (p1,p2) {
-	universe.lines.push(new Line(p1,p2))
+function addLine (p1,p2,color="#fff") {
+	z = new Line(p1,p2)
+	z.color = color
+	universe.lines.push(z)
 }
 
 function Point (x,y,z) {
@@ -133,6 +135,7 @@ function CanvasLine (line) {
 	this.x1 = new CanvasPoint(line.initial_point).x
 	this.y2 = new CanvasPoint(line.final_point).y
 	this.y1 = new CanvasPoint(line.initial_point).y
+	this.color = line.color
 }
 
 function whatToDraw (t) {

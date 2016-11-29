@@ -52,9 +52,9 @@ function main() {
 
 	// DRAW
 	drawFrame()
-	addLine(new Point(-1,0,0),new Point(1,0,0))
-	addLine(new Point(0,-1,0),new Point(0,1,0))
-	addLine(new Point(0,0,-1),new Point(0,0,1))
+	addLine(new Point(-1,0,0),new Point(1,0,0),"#0f0")
+	addLine(new Point(0,-1,0),new Point(0,1,0),"#0f0")
+	addLine(new Point(0,0,-1),new Point(0,0,1),"#0f0")
 	addPoint(0,0,0)
 	addPoint(-1,-1,-1,"#f00")
 	addPoint(-1,-1,+1,"#f00")
@@ -125,7 +125,7 @@ function drawPoint (point2d) {
 
 function drawLine (line2d) {
 	c1.beginPath()
-	c1.strokeStyle = "#fff"
+	c1.strokeStyle = line2d.color
 	c1.lineWidth = 5
 	c1.moveTo(x0+line2d.x1,y0-line2d.y1)
 	c1.lineTo(x0+line2d.x2,y0-line2d.y2)
