@@ -36,7 +36,8 @@ function Vector (p1,p2) {
 }
 
 function CoordinatesToVector(x,y,z){
-	return new Vector(origin,new Point(x,y,z))
+	var v = new Vector(origin,new Point(x,y,z))
+	return v
 }
 
 function Matrix(arr){
@@ -164,16 +165,11 @@ function Eye (x,y,z,a,b,c) {
 
 	addPoint(x,y,z)
 
-	this.see = function (x,y,e=0) {
+	this.see = function (x,y) {
 		// NOTE: FIRST CONVERT (x,y) to map coordinate system
 		// rectangle (-w,-h)-(w,h) to (-3.14,-1)-(3.14,1)
-		if (e==0) {
-			var x_ = x*tau/w
-			var y_ = 2*y/h // think afterwards: why is this '2' here?
-		} else{
-			x_=x
-			y_=y
-		};
+		x=toLocalCoords(x,y)[0]
+		y=toLocalCoords(x,y)[1]
 		// supposed to 'send' rays in all directions and 'see objects'
 		// Scheme:
 		// (x,y) +-(a,b,c?) ----> L-Projection ----> (x,y,z) (part of sphere)
@@ -185,13 +181,6 @@ function Eye (x,y,z,a,b,c) {
 		// first develop the "pinhole" eye
 
 		// To_RGB (0-->1) |----> (#xyz)
-		
-
-		// TEST
-		var temp = LambertToSphere(x_,y_)
-		return dectohex(Math.abs(temp[0]),
-						Math.abs(temp[1]),
-						Math.abs(temp[2]))
 	}
 }
 
@@ -232,4 +221,10 @@ function LambertToSphere (x_,y_,r=1) {
 	var x = p*Math.cos(inverseLambertProjection(x_,y_)[0])
 	var y = p*Math.sin(inverseLambertProjection(x_,y_)[0])
 	return [x,y,z]
+}
+
+function toLocalCoords (x,y) {
+	var x_ = x*tau/w
+	var y_ = 2*y/h // think afterwards: why is this '2' here?
+	return [x_,y_]
 }

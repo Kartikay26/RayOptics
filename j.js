@@ -50,6 +50,14 @@ function main() {
 	x0=w/2
 	y0=h/2
 
+	main2()
+
+	setInterval(animate,1000/f)
+}
+
+function main2 () {
+	// to avoid confusion
+
 	// DRAW
 	addLine(new Point(-1,0,0),new Point(1,0,0),"#f00")
 	addLine(new Point(0,-1,0),new Point(0,1,0),"#0f0")
@@ -57,7 +65,6 @@ function main() {
 	addPoint(0,0,0)
 	c1.lineCap = "round"
 	universe.eye = new Eye(1,1,1,-1,-1,-1)
-	setInterval(animate,1000/f)
 }
 
 function drawFrame () {
