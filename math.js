@@ -170,24 +170,42 @@ function Eye (x,y,z,a,b,c) {
 		// rectangle (-w,-h)-(w,h) to (-3.14,-1)-(3.14,1)
 		x=toLocalCoords(x,y)[0]
 		y=toLocalCoords(x,y)[1]
-		// supposed to 'send' rays in all directions and 'see objects'
+		
+
+		// first making 'pinhole' style eye
+		// Scheme different from below -- this is the scheme:
+		/*	1. Take the coordinates of the eye and the direction
+				in which it is seeing.
+			2. Using LambertToSphere(x,y) and appropriate transformations using
+				getRotaationMatrix(a,b,c) get the point on the 'retina' which
+				requires the image.
+			3. Connect that point and the aperture of the eye (or the center?)
+				to get the equation of a line (ray) ***.
+					*** - be careful here ...
+					       refraction and reflection need to be implemented
+					       right here
+			4. Test each of the points in the universe if they match that eqn
+			5. Get the color and brightness of those points and return the
+				average.
+			*/
+
+
+		
 		// Scheme:
+		// supposed to recieve rays from objects
+		// and focus them on screen and average and display
 		// (x,y) +-(a,b,c?) ----> L-Projection ----> (x,y,z) (part of sphere)
 		// -----> L-P ----> all directions ----> rays -----> search objects
 		// ---> follow laws of optics -----> end on opaque object/light source->
-		// ------> object.colour ---> average --------> hex ------> return
+		// ------> object.colour ---> average --------> hex  ---- rgb ------> return
 		// returns colour
-		
-		// first develop the "pinhole" eye
-
-		// To_RGB (0-->1) |----> (#xyz)
 	}
 }
 
 function dectohex (r,g,b) {
-	return "#"+hex[Math.floor(r*16)]
-			  +hex[Math.floor(g*16)]
-			  +hex[Math.floor(b*16)]
+	return "#"+hex[Math.floor(Math.abs(r)*16)]
+			  +hex[Math.floor(Math.abs(g)*16)]
+			  +hex[Math.floor(Math.abs(b)*16)]
 }
 
 function latitude (x,y,z) {

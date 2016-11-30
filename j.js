@@ -1,6 +1,6 @@
 window.onload = main
 
-var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=5,t = 0,step=5,key
+var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=500,t = 0,step=5,key
 var wa=0,wb=0,wc=0
 // step = 1 for perfect resolution
 
@@ -55,18 +55,6 @@ function main() {
 	setInterval(animate,1000/f)
 }
 
-function main2 () {
-	// to avoid confusion
-
-	// DRAW
-	addLine(new Point(-1,0,0),new Point(1,0,0),"#f00")
-	addLine(new Point(0,-1,0),new Point(0,1,0),"#0f0")
-	addLine(new Point(0,0,-1),new Point(0,0,1),"#00f")
-	addPoint(0,0,0)
-	c1.lineCap = "round"
-	universe.eye = new Eye(1,1,1,-1,-1,-1)
-}
-
 function drawFrame () {
 	c1.fillStyle = "#111"
 	c1.fillRect(0,0,w,h)
@@ -78,8 +66,8 @@ function drawFrame () {
 	//if (key == 40) {wa += 0.01;wb += 0.01; }
 }
 
-window.onkeydown = function(e){key = e.keyCode}
-window.onkeyup = function(e){key = 0}
+window.onkeypress = function(e){if(e.key=='w')q+=0.1;if(e.key=='s')q-=0.1;main3();}
+var q = 1.0;
 
 function animate () {
 	drawFrame()
@@ -99,7 +87,7 @@ function animate () {
 	}
 
 	// Draw something on the "eye" canvas
-	eyeDraw(universe.eye.see)
+	//eyeDraw(universe.eye.see)
 }
 
 function drawPoint (point2d) {
@@ -134,4 +122,77 @@ function eyeDraw (func) {
 	}
 }
 
+function main2 () {
+	// to avoid confusion
 
+	// DRAW
+	c1.lineCap = "round"
+	drawFrame()
+	//universe.eye = new Eye(1,1,1,-1,-1,-1)
+	w = 2*w;x0=2*x0;can1.width = w; can2.style.display='none';
+	wa=0.5; wb=0.05; wc=0.005;
+	main3()
+}
+
+function main3 () {
+	universe.lines = []
+	addLattice(q,[0,0,0],1,2,0);
+	zoom=1
+}
+
+function addLattice (d0,centre=[0,0,0],length=1,parts=2,e=true,z1=5) {
+	for (var i = -parts; i <= parts; i++) {
+	for (var j = -parts; j <= parts; j++) {
+	for (var k = -parts; k <= parts; k++) {
+	for (var l = -parts; l <= parts; l++) {
+	for (var m = -parts; m <= parts; m++) {
+	for (var n = -parts; n <= parts; n++) {
+		var d = Math.sqrt(Math.pow(i-l,2)+Math.pow(j-m,2)+Math.pow(k-n,2))
+		if (Math.abs(d - d0)<0.05) {
+			var i_= i/Math.sqrt(i*i+j*j+k*k)
+			var j_= j/Math.sqrt(i*i+j*j+k*k)
+			var k_= k/Math.sqrt(i*i+j*j+k*k)
+			var l_= l/Math.sqrt(l*l+m*m+n*n)
+			var m_= m/Math.sqrt(l*l+m*m+n*n)
+			var n_= n/Math.sqrt(l*l+m*m+n*n)
+			var a_ = i_*l_
+			var b_ = j_*m_
+			var c_ = k_*n_
+			if(e){
+				if(a_==0&&b_==0&&c_==0){
+					var a=1;var b=1;var c=1;
+				}
+				else{
+					var a = a_/Math.sqrt(a_*a_+b_*b_+c_*c_)
+					var b = b_/Math.sqrt(a_*a_+b_*b_+c_*c_)
+					var c = c_/Math.sqrt(a_*a_+b_*b_+c_*c_)
+				}
+				addLine(new Point(length*i+centre[0],length*j+centre[1],length*k+centre[2]),
+				new Point(length*l+centre[0],length*m+centre[1],length*n+centre[2]),
+				dectohex(a,b,c));
+				z += 1;
+			}
+			else{
+				if(a_==0&&b_==0&&c_==0){
+					var a=1;var b=1;var c=1;
+				}
+				else{
+					var a = 0
+					var b = 0
+					var c = 0
+				}
+				addLine(new Point(length*i+centre[0],length*j+centre[1],length*k+centre[2]),
+				new Point(length*l+centre[0],length*m+centre[1],length*n+centre[2]),
+				dectohex(a,b,c));
+				z += 1;
+			}
+			//addPoint(length*i+centre[0],length*j+centre[1],length*k+centre[2],dectohex(i_,j_,k_));
+			//addPoint(length*l+centre[0],length*m+centre[1],length*n+centre[2],dectohex(l_,m_,n_));
+		};
+	};
+	};
+	};
+	};
+	};
+	};
+}
