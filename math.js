@@ -8,6 +8,7 @@ function addPoint (x,y,z,color="#fff") {
 	z = new Point(x,y,z)
 	z.color = color
 	universe.points.push(z)
+	return z;
 }
 
 function addLine (p1,p2,color="#fff") {
@@ -163,14 +164,13 @@ function Eye (x,y,z,a,b,c) {
 	this.b = b; // | Direction in which the eye is watching.
 	this.c = c; // ┴
 
-	addPoint(x,y,z)
+	this.r = addPoint(x,y,z)
 
 	this.see = function (x,y) {
 		// NOTE: FIRST CONVERT (x,y) to map coordinate system
 		// rectangle (-w,-h)-(w,h) to (-3.14,-1)-(3.14,1)
 		x=toLocalCoords(x,y)[0]
 		y=toLocalCoords(x,y)[1]
-		
 
 		// first making 'pinhole' style eye
 		// Scheme different from below -- this is the scheme:
@@ -189,7 +189,12 @@ function Eye (x,y,z,a,b,c) {
 				average.
 			*/
 
+		var r_ = LambertToSphere(x,y)
+		var x0 = r_[0] + universe.eye.x
+		var y0 = r_[1] + universe.eye.y
+		var z0 = r_[2] + universe.eye.z
 
+		if(universe.lines.length<200){addLine(new Point(x0,y0,z0),universe.eye.r);}
 		
 		// Scheme:
 		// supposed to recieve rays from objects

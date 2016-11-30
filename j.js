@@ -1,7 +1,7 @@
 window.onload = main
 
-var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=500,t = 0,step=5,key
-var wa=0,wb=0,wc=0
+var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=500,t = 0,step=50,key
+var z=0.1,wa=z,wb=-0.1*z,wc=-0.1*z
 // step = 1 for perfect resolution
 
 function change (variableName,to,time) {
@@ -66,7 +66,10 @@ function drawFrame () {
 	//if (key == 40) {wa += 0.01;wb += 0.01; }
 }
 
-window.onkeypress = function(e){if(e.key=='w')q+=0.1;if(e.key=='s')q-=0.1;main3();}
+window.onkeypress = function(e){
+	// What happens when you press keys goes here
+	// TODO -- IN THE END -- add code here for creating objects etc
+}
 var q = 1.0;
 
 function animate () {
@@ -87,7 +90,7 @@ function animate () {
 	}
 
 	// Draw something on the "eye" canvas
-	//eyeDraw(universe.eye.see)
+	eyeDraw(universe.eye.see)
 }
 
 function drawPoint (point2d) {
@@ -128,19 +131,13 @@ function main2 () {
 	// DRAW
 	c1.lineCap = "round"
 	drawFrame()
-	//universe.eye = new Eye(1,1,1,-1,-1,-1)
-	w = 2*w;x0=2*x0;can1.width = w; can2.style.display='none';
-	wa=0.5; wb=0.05; wc=0.005;
-	main3()
+	addLine(new Point(-1,0,0),new Point(1,0,0),'#ff0');
+	addLine(new Point(0,-1,0),new Point(0,1,0),'#f0f');
+	addLine(new Point(0,0,-1),new Point(0,0,1),'#0ff');
+	universe.eye = new Eye(1,1,1,-1,-1,-1)
 }
 
-function main3 () {
-	universe.lines = []
-	addLattice(q,[0,0,0],1,2,0);
-	zoom=1
-}
-
-function addLattice (d0,centre=[0,0,0],length=1,parts=2,e=true,z1=5) {
+function addLattice (d0,centre=[0,0,0],length=1,parts=2,e=true) {
 	for (var i = -parts; i <= parts; i++) {
 	for (var j = -parts; j <= parts; j++) {
 	for (var k = -parts; k <= parts; k++) {
