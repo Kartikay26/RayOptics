@@ -1,7 +1,7 @@
 window.onload = main
 
-var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=500,t = 0,step=50,key
-var z=0.1,wa=z,wb=-0.1*z,wc=-0.1*z
+var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=50,t = 0,step=3,key
+var z=0.2,wa=z,wb=-0.1*z,wc=-0.1*z
 // step = 1 for perfect resolution
 
 function change (variableName,to,time) {
@@ -88,8 +88,20 @@ function animate () {
 		point = d.points[i]
 		drawPoint(point)
 	}
-
+	// OLD CODE
+	/*
+	// remove extra lines from the universe
+	var oldlines = universe.lines
+	universe.lines = []
+	for (var zl = oldlines.length - 1; zl >= 0; zl--) {
+		var l = oldlines[zl]
+		if(!l.e){
+			universe.lines.push(oldlines[zl])
+		}
+	};
+	*/
 	// Draw something on the "eye" canvas
+	universe.eye.getRays()
 	eyeDraw(universe.eye.see)
 }
 

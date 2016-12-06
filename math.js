@@ -15,6 +15,7 @@ function addLine (p1,p2,color="#fff") {
 	z = new Line(p1,p2)
 	z.color = color
 	universe.lines.push(z)
+	return z
 }
 
 function Point (x,y,z) {
@@ -166,45 +167,55 @@ function Eye (x,y,z,a,b,c) {
 
 	this.r = addPoint(x,y,z)
 
-	this.see = function (x,y) {
+	// How the eye is supposed to work:
+	/* In the beginning, run the this.getRays fxn which does the following:
+
+		For each point in the universe,
+		
+		send a ray (straight line) from that point in all directions
+
+		apply the laws of optics to that ray // build traceRay fxn
+
+		see where the ray gets near the eye // v
+
+		solve (by bisection method etc) the direction of ray so it goes
+		directly to the centre of the eye // build raySolve fxn
+
+		see where it meets the 'retina'
+
+		store the colour for that point in the retina
+
+		return the stored colour in this.see
+		*/
+
+	this.retina = [];
+	//console.log(this.retina)
+	for (var i = -w; i < w; i+=step) {
+		this.retina.push([]);
+	}
+	for (var i = -w; i < w; i+=step) {
+		for (var j = -h; j < h; j+=step) {
+			this.retina[(i+w)/step][(j+h)/step] = "#fff";
+		}
+	}
+
+	this.getRays = function(){
+
+	}
+
+
+	this.see = function (x,y) {	
+		return universe.eye.retina[(i+w)/step - 1][(j+h)/step - 1]
+	}
+
+
+	// OLD CODE
+	/*
 		// NOTE: FIRST CONVERT (x,y) to map coordinate system
 		// rectangle (-w,-h)-(w,h) to (-3.14,-1)-(3.14,1)
 		x=toLocalCoords(x,y)[0]
 		y=toLocalCoords(x,y)[1]
-
-		// first making 'pinhole' style eye
-		// Scheme different from below -- this is the scheme:
-		/*	1. Take the coordinates of the eye and the direction
-				in which it is seeing.
-			2. Using LambertToSphere(x,y) and appropriate transformations using
-				getRotaationMatrix(a,b,c) get the point on the 'retina' which
-				requires the image.
-			3. Connect that point and the aperture of the eye (or the center?)
-				to get the equation of a line (ray) ***.
-					*** - be careful here ...
-					       refraction and reflection need to be implemented
-					       right here
-			4. Test each of the points in the universe if they match that eqn
-			5. Get the color and brightness of those points and return the
-				average.
-			*/
-
-		var r_ = LambertToSphere(x,y)
-		var x0 = r_[0] + universe.eye.x
-		var y0 = r_[1] + universe.eye.y
-		var z0 = r_[2] + universe.eye.z
-
-		if(universe.lines.length<200){addLine(new Point(x0,y0,z0),universe.eye.r);}
-		
-		// Scheme:
-		// supposed to recieve rays from objects
-		// and focus them on screen and average and display
-		// (x,y) +-(a,b,c?) ----> L-Projection ----> (x,y,z) (part of sphere)
-		// -----> L-P ----> all directions ----> rays -----> search objects
-		// ---> follow laws of optics -----> end on opaque object/light source->
-		// ------> object.colour ---> average --------> hex  ---- rgb ------> return
-		// returns colour
-	}
+	*/
 }
 
 function dectohex (r,g,b) {
