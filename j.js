@@ -1,6 +1,6 @@
 window.onload = main
 
-var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=50,t = 0,step=5,key
+var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=10,t = 0,step=20,key
 var z=0.2,wa=z,wb=-0.1*z,wc=-0.1*z
 // step = 1 for perfect resolution
 
@@ -131,7 +131,7 @@ function eyeDraw (func) {
 		for (var j = -h; j < h; j+=step) {
 			//console.log(func(i,j))
 			c2.fillStyle = func(i,j)
-			c2.fillRect(x0+i,y0-j,step+1,step+1)
+			c2.fillRect(x0+i,y0-j,step,step)
 			// note the last 2 arguments are not coordinates
 		}
 	}

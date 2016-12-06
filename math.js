@@ -1,6 +1,4 @@
-universe = {'lines':[],'points':[], 'eye':{},
-	 'refractingsurfaces':[], 'reflectingsurfaces':[],
-	  'opaquesurfaces':[]}
+universe = {'lines':[],'points':[], 'eye':{}, 'surfaces':[]}
 
 universe.display = {'a':0, 'b':0, 'c':0}
 
@@ -167,7 +165,8 @@ function Eye (x,y,z,a,b,c) {
 	this.b = b; // | Direction in which the eye is watching.
 	this.c = c; // ┴
 
-	this.r = addPoint(x,y,z)
+	this.r = new Point(x,y,z);
+	// this.r = addPoint(x,y,z)
 
 	// How the eye is supposed to work:
 	/* In the beginning, run the this.getRays fxn which does the following:
@@ -196,6 +195,19 @@ function Eye (x,y,z,a,b,c) {
 
 	this.getRays = function(){
 
+		for (var i = universe.points.length - 1; i >= 0; i--) {
+			var p = universe.points[i]
+			
+			var r = this.traceRay(p,1,1,1) // TODO in all directions
+										   // not only 1,1,1
+
+			var x = r[0]*w/(tau/2)
+			var y = r[1]*h
+
+			universe.eye.retina[Math.floor((x+w)/step)][Math.floor((y+h)/step)] = p.color;
+
+		};
+
 	}
 
 	this.traceRay = function(point,d_x,d_y,d_z){
@@ -206,19 +218,46 @@ function Eye (x,y,z,a,b,c) {
 		// if the ray goes thru the eye and hits the retina
 		//  return the point where it hit
 
-		var x=0,y=0,z=0;
+		var x=point.x,y=point.y,z=point.z;
 
-		var maxdistance = 10 * unit;
+		var maxdistance = 10;
 
+		var zt = 0, zs = 1/10;
 		while(Math.sqrt(x*x+y*y+z*z)<maxdistance){
-			// code here
+			
+			var a = x + zs * d_x
+			var b = y + zs * d_y
+			var c = z + zs * d_z
+			var d = surfaceBetween(x,y,z,a,b,c)
+
+			if (d != 0) {
+				// code for handling various kinds of surfaces
+			} else {
+				x=a;y=b;z=c;
+			}
+
+			
+			if(Math.abs(distance(x,y,z,universe.eye.x,
+				universe.eye.y,universe.eye.z) - 1)<eps){
+				// we have hit the retina
+				// return coords in Lambert projection of
+				// this point wrt eye center
+				// TODO problem - front / back
+				return LambertProjection(x-universe.eye.x,
+										 y-universe.eye.y,
+										 z-universe.eye.z)
+			}
+
+			zt += zs
 		}
 
 		return false
 	}
 
 	this.see = function (x,y) {	
-		return universe.eye.retina[(i+w)/step - 1][(j+h)/step - 1]
+		var color = universe.eye.retina[(x+w)/step][(y+h)/step]
+		if (color != '#fff') {console.log(x,y)};
+		return color
 	}
 
 
@@ -229,6 +268,16 @@ function Eye (x,y,z,a,b,c) {
 		x=toLocalCoords(x,y)[0]
 		y=toLocalCoords(x,y)[1]
 	*/
+}
+
+var eps = 0.1;
+
+function distance (x,y,z,a,b,c) {
+	return Math.sqrt(Math.pow(x-a,2)+Math.pow(y-b,2)+Math.pow(z-c,2))
+}
+
+function surfaceBetween (x,y,z,a,b,c) {
+	return 0
 }
 
 function dectohex (r,g,b) {
@@ -252,12 +301,12 @@ function longitude (x,y,z) {
 function LambertProjection (x,y,z) {
 	var x_ = longitude(x,y,z)
 	var y_ = Math.sin(latitude(x,y,z))
-	return [x_,y_]
+		return [x_,y_]
 }
 
 function inverseLambertProjection (x_,y_) {
-	longitude = x_
-	latitude = Math.asin(y_)
+	var longitude = x_
+	var latitude = Math.asin(y_)
 	//        lambda     phi
 	return [longitude,latitude]
 }
