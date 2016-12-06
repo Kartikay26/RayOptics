@@ -1,4 +1,6 @@
-universe = {'lines':[],'points':[], 'eye':{}}
+universe = {'lines':[],'points':[], 'eye':{},
+	 'refractingsurfaces':[], 'reflectingsurfaces':[],
+	  'opaquesurfaces':[]}
 
 universe.display = {'a':0, 'b':0, 'c':0}
 
@@ -174,9 +176,9 @@ function Eye (x,y,z,a,b,c) {
 		2. send a ray (straight line) from that point in all directions
 		3. apply the laws of optics to that ray // build traceRay fxn
 		4. see where the ray gets near the eye // v
-		5. solve (by bisection method etc) the direction of ray so it goes
-		directly to the centre of the eye // build raySolve fxn
-		see where it meets the 'retina'
+		// 5. solve (by bisection method etc) the direction of ray so it goes
+		// directly to the centre of the eye // build raySolve fxn
+		// see where it meets the 'retina' <-- Not rquired ^ ^^
 		6. store the colour for that point in the retina
 		7. return the stored colour in this.see
 		*/
@@ -196,8 +198,23 @@ function Eye (x,y,z,a,b,c) {
 
 	}
 
-	this.traceRay = function(point,direction){
+	this.traceRay = function(point,d_x,d_y,d_z){
+		// Trace the ray through all the surfaces
+		// use laws of optics in refracting and reflecting surfaces // ignore for now
+		// return false on hitting opaque surface // ignore for now
+		// if the ray gets too far return false
+		// if the ray goes thru the eye and hits the retina
+		//  return the point where it hit
 
+		var x=0,y=0,z=0;
+
+		var maxdistance = 10 * unit;
+
+		while(Math.sqrt(x*x+y*y+z*z)<maxdistance){
+			// code here
+		}
+
+		return false
 	}
 
 	this.see = function (x,y) {	
