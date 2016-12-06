@@ -170,22 +170,15 @@ function Eye (x,y,z,a,b,c) {
 	// How the eye is supposed to work:
 	/* In the beginning, run the this.getRays fxn which does the following:
 
-		For each point in the universe,
-		
-		send a ray (straight line) from that point in all directions
-
-		apply the laws of optics to that ray // build traceRay fxn
-
-		see where the ray gets near the eye // v
-
-		solve (by bisection method etc) the direction of ray so it goes
+		1. For each point in the universe,
+		2. send a ray (straight line) from that point in all directions
+		3. apply the laws of optics to that ray // build traceRay fxn
+		4. see where the ray gets near the eye // v
+		5. solve (by bisection method etc) the direction of ray so it goes
 		directly to the centre of the eye // build raySolve fxn
-
 		see where it meets the 'retina'
-
-		store the colour for that point in the retina
-
-		return the stored colour in this.see
+		6. store the colour for that point in the retina
+		7. return the stored colour in this.see
 		*/
 
 	this.retina = [];
@@ -203,6 +196,9 @@ function Eye (x,y,z,a,b,c) {
 
 	}
 
+	this.traceRay = function(point,direction){
+
+	}
 
 	this.see = function (x,y) {	
 		return universe.eye.retina[(i+w)/step - 1][(j+h)/step - 1]
