@@ -184,12 +184,12 @@ function Eye (x,y,z,a,b,c) {
 
 	this.retina = [];
 	//console.log(this.retina)
-	for (var i = -w; i < w; i+=step) {
+	for (var i = 0; i < w; i+=step) {
 		this.retina.push([]);
 	}
-	for (var i = -w; i < w; i+=step) {
-		for (var j = -h; j < h; j+=step) {
-			this.retina[(i+w)/step][(j+h)/step] = "#fff";
+	for (var i = 0; i < w; i+=step) {
+		for (var j = 0; j < 0; j+=step) {
+			this.retina[i/step][j/step] = "#fff";
 		}
 	}
 
@@ -201,10 +201,10 @@ function Eye (x,y,z,a,b,c) {
 			var r = this.traceRay(p,1,1,1) // TODO in all directions
 										   // not only 1,1,1
 
-			var x = r[0]*w/(tau/2)
-			var y = r[1]*h
+			var x = (tau/2+r[0])*w/(tau/2)
+			var y = (1+r[1])*h
 
-			universe.eye.retina[Math.floor((x+w)/step)][Math.floor((y+h)/step)] = p.color;
+			universe.eye.retina[Math.floor(x/step)][Math.floor(y/step)] = p.color;
 
 		};
 
@@ -254,9 +254,8 @@ function Eye (x,y,z,a,b,c) {
 		return false
 	}
 
-	this.see = function (x,y) {	
-		var color = universe.eye.retina[(x+w)/step][(y+h)/step]
-		if (color != '#fff') {console.log(x,y)};
+	this.see = function (x,y,e=0) {	
+		var color = universe.eye.retina[x/step][y/step]
 		return color
 	}
 

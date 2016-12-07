@@ -1,7 +1,7 @@
 window.onload = main
 
 var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=10,t = 0,step=20,key
-var z=0.2,wa=z,wb=-0.1*z,wc=-0.1*z
+var z=0.5,wa=z,wb=-0.1*z,wc=-0.1*z
 // step = 1 for perfect resolution
 
 function change (variableName,to,time) {
@@ -127,11 +127,11 @@ function drawLine (line2d) {
 }
 
 function eyeDraw (func) {
-	for (var i = -w; i < w; i+=step) {
-		for (var j = -h; j < h; j+=step) {
+	for (var i = 0; i < w; i+=step) {
+		for (var j = 0; j < h; j+=step) {
 			//console.log(func(i,j))
 			c2.fillStyle = func(i,j)
-			c2.fillRect(x0+i,y0-j,step,step)
+			c2.fillRect(i,j,step,step)
 			// note the last 2 arguments are not coordinates
 		}
 	}
@@ -150,7 +150,7 @@ function main2 () {
 	universe.eye = new Eye(1,1,1,-1,-1,-1)
 }
 
-function addLattice (d0,centre=[0,0,0],length=1,parts=2,e=true) {
+function addLattice (d0,centre=[0,0,0],length=1,parts=1,e=true) {
 	for (var i = -parts; i <= parts; i++) {
 	for (var j = -parts; j <= parts; j++) {
 	for (var k = -parts; k <= parts; k++) {
