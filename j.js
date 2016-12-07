@@ -1,6 +1,6 @@
 window.onload = main
 
-var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=10,t = 0,step=20,key
+var can1,can2,c1,c2,w,h,x0,y0,tau=2*Math.PI,unit,zoom=2,f=10,t = 0,step=5,key
 var z=0.5,wa=z,wb=-0.1*z,wc=-0.1*z
 // step = 1 for perfect resolution
 
@@ -148,6 +148,7 @@ function main2 () {
 	addLine(new Point(0,0,-1),new Point(0,0,1),'#0ff');
 	addPoint(0,0,0,"#f00")
 	universe.eye = new Eye(1,1,1,-1,-1,-1)
+	universe.errors = 0
 }
 
 function addLattice (d0,centre=[0,0,0],length=1,parts=1,e=true) {

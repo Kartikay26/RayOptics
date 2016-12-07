@@ -204,7 +204,17 @@ function Eye (x,y,z,a,b,c) {
 			var x = (tau/2+r[0])*w/(tau/2)
 			var y = (1+r[1])*h
 
-			universe.eye.retina[Math.floor(x/step)][Math.floor(y/step)] = p.color;
+			try{
+				universe.eye.retina[Math.floor(x/step)][Math.floor(y/step)] = p.color;
+			}
+			catch(e){
+				if (universe.errors == 0) {
+					console.log(e)
+					console.trace()
+					universe.errors ++
+				}
+			}
+			
 
 		};
 
@@ -277,6 +287,21 @@ function distance (x,y,z,a,b,c) {
 
 function surfaceBetween (x,y,z,a,b,c) {
 	return 0
+}
+
+function hextodec(str){
+	a = str[1]
+	b = str[2]
+	c = str[3]
+	return [hex.indexOf(a),hex.indexOf(b),hex.indexOf(c)]
+}
+
+function reduceBrightness (str,r) {
+	v = hextodec(str)
+	a = (v[0]/16)/r
+	b = (v[1]/16)/r
+	c = (v[2]/16)/r
+	return dectohex(a,b,c)
 }
 
 function dectohex (r,g,b) {
